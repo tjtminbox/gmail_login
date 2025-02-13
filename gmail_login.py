@@ -4,12 +4,18 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
+from selenium.common.exceptions import TimeoutException
 from webdriver_manager.chrome import ChromeDriverManager
 import time
 
 # Login credentials
 EMAIL = "thomas@vocerpay.xyz"
 PASSWORD = "Katasandi01"
+
+def wait_and_find_element(driver, by, value, timeout=20):
+    """Wait for an element to be present and return it"""
+    wait = WebDriverWait(driver, timeout)
+    return wait.until(EC.presence_of_element_located((by, value)))
 
 def login_gmail():
     # Setup Chrome options
@@ -18,61 +24,58 @@ def login_gmail():
     options.add_argument('--disable-gpu')
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-dev-shm-usage')
-    # Uncomment the line below if you want to run Chrome in headless mode
-    # options.add_argument('--headless=new')
+    # options.add_argument('--headless=new')  # Uncomment for headless mode
 
     print("Initializing Chrome driver...")
-    # Initialize the Chrome driver
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
-    wait = WebDriverWait(driver, 20)
     
     try:
         print("Navigating to Gmail login page...")
-        # Navigate to Gmail login page
-        driver.get('https://gmail.com')
-
+        driver.get('https://accounts.google.com/signin/v2/identifier?service=mail')
+        
+        # Wait for email field and enter email
         print("Entering email...")
-        # Wait for and enter email
-        email_field = wait.until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, 'input[type="email"]'))
-        )
+        email_field = wait_and_find_element(driver, By.NAME, "identifier")
         email_field.clear()
         email_field.send_keys(EMAIL)
         
-        print("Clicking Next after email...")
         # Click Next after email
-        next_button = wait.until(
-            EC.element_to_be_clickable((By.CSS_SELECTOR, '#identifierNext button'))
-        )
-        next_button.click()
-
+        print("Clicking Next after email...")
+        next_button = wait_and_find_element(driver, By.CSS_SELECTOR, "#identifierNext button")
+        driver.execute_script("arguments[0].click();", next_button)
+        
+        # Wait for password field and enter password
+        print("Waiting for password field...")
+        time.sleep(2)  # Short pause to let the transition complete
+        password_field = wait_and_find_element(driver, By.NAME, "Passwd", timeout=30)
         print("Entering password...")
-        # Wait for and enter password
-        password_field = wait.until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, 'input[type="password"]'))
-        )
         password_field.clear()
         password_field.send_keys(PASSWORD)
         
-        print("Clicking Next after password...")
         # Click Next after password
-        password_next_button = wait.until(
-            EC.element_to_be_clickable((By.CSS_SELECTOR, '#passwordNext button'))
-        )
-        password_next_button.click()
-
+        print("Clicking Next after password...")
+        password_next = wait_and_find_element(driver, By.CSS_SELECTOR, "#passwordNext button")
+        driver.execute_script("arguments[0].click();", password_next)
+        
         # Wait for Gmail to load
         print("Waiting for Gmail to load...")
-        wait.until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, '.nH'))
-        )
+        try:
+            wait_and_find_element(driver, By.CSS_SELECTOR, 'div[role="main"]', timeout=30)
+            print("Successfully logged in!")
+        except TimeoutException:
+            print("Timeout waiting for Gmail to load, but login might have succeeded.")
         
-        print("Successfully logged in!")
-        print("Keeping browser open for 10 seconds...")
-        time.sleep(10)
+        print("Keeping browser open for 30 seconds...")
+        time.sleep(30)
 
     except Exception as e:
         print(f"An error occurred: {str(e)}")
+        # Take a screenshot if there's an error
+        try:
+            driver.save_screenshot("error_screenshot.png")
+            print("Error screenshot saved as 'error_screenshot.png'")
+        except:
+            print("Could not save error screenshot")
     
     finally:
         print("Closing browser...")
