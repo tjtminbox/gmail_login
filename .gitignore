@@ -1,16 +1,21 @@
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-.Python
-env/
-venv/
-.env
+# Firebase
+.firebase/
 *.log
+
+# Dependencies
+node_modules/
+
+# System Files
 .DS_Store
+Thumbs.db
+
+# IDE
 .idea/
 .vscode/
-*.screenshot.png
-error_screenshot.png
-login_state.png
-chromedriver.log
+
+# Old files we don't need anymore
+server.py
+app.py
+requirements.txt
+Procfile
+gmail_login.py

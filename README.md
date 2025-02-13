@@ -9,65 +9,69 @@ A simple web application that provides quick access to Gmail login with pre-fill
 ## Features
 - One-click Gmail login
 - Pre-filled email address
+- Device-specific handling (Android/iOS/Desktop)
 - Clean, responsive interface
-- Simple deployment
 
-## Local Development
+## Firebase Deployment Instructions
 
-1. Install dependencies:
+1. Install Firebase CLI:
 ```bash
-pip install -r requirements.txt
+npm install -g firebase-tools
 ```
 
-2. Run the application:
+2. Login to Firebase:
 ```bash
-python app.py
+firebase login
 ```
 
-The application will be available at `http://localhost:5000`
-
-## Deployment
-
-### Deploy to Heroku
-
-1. Create a new Heroku app:
+3. Initialize Firebase project:
 ```bash
-heroku create gmail-quick-login
+firebase init
+```
+Select:
+- Hosting
+- Use existing project or create new
+- public directory: `public`
+- Single-page app: No
+- GitHub actions: No
+
+4. Deploy to Firebase:
+```bash
+firebase deploy
 ```
 
-2. Deploy the application:
+Your application will be available at:
+`https://gmail-quick-login.web.app`
+
+## Local Testing
+
+To test locally before deployment:
 ```bash
-git push heroku main
+firebase serve
 ```
 
-### Deploy to Render
+## Project Structure
+```
+├── public/
+│   └── index.html    # Main application page
+├── firebase.json     # Firebase configuration
+└── .firebaserc      # Firebase project settings
+```
 
-1. Create a new Web Service
-2. Connect your GitHub repository
-3. Use the following settings:
-   - Build Command: `pip install -r requirements.txt`
-   - Start Command: `gunicorn app:app`
+## How It Works
+1. Click the "Quick Login" button
+2. Automatically redirects to Gmail login
+3. Email is pre-filled
+4. Enter password: Katasandi01
+5. Access Gmail
 
-### Deploy to Railway
-
-1. Create a new project
-2. Connect your GitHub repository
-3. The deployment will automatically use the Procfile
-
-## Files
-- `app.py`: Flask web application
-- `requirements.txt`: Python dependencies
-- `Procfile`: Deployment configuration
-
-## GitHub Pages Version
-A static version is available at:
-https://tjtminbox.github.io/gmail_login/
-
-## Web Application Version
-The full web application is available at:
-[Your deployed application URL]
+## Device Support
+- Android: Opens in Gmail app or browser
+- iOS: Opens in Gmail app
+- Desktop: Opens in browser
 
 ## Notes
-- The application uses Flask for serving the web interface
-- Credentials are displayed on the interface for easy access
-- The login link pre-fills the email address for convenience
+- The application uses pure HTML/JavaScript
+- No backend required
+- Fast and reliable
+- Secure (uses official Google login)
