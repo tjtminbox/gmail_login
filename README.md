@@ -1,24 +1,16 @@
-# Gmail Auto Login
+# Gmail Quick Login
 
-This application provides automated Gmail login functionality through both a web interface and a Selenium script.
+A simple web application that provides quick access to Gmail login with pre-filled credentials.
 
 ## Account Information
 - Email: thomas@vocerpay.xyz
 - Password: Katasandi01
 
 ## Features
-
-1. **Web Application**
-   - Interactive web interface
-   - One-click automated login
-   - Real-time status updates
-   - Automatic redirection to Gmail
-
-2. **Selenium Script**
-   - Standalone Python script for local use
-   - Detailed logging
-   - Error handling with screenshots
-   - Headless browser support
+- One-click Gmail login
+- Pre-filled email address
+- Clean, responsive interface
+- Simple deployment
 
 ## Local Development
 
@@ -27,62 +19,55 @@ This application provides automated Gmail login functionality through both a web
 pip install -r requirements.txt
 ```
 
-2. Run the web application:
+2. Run the application:
 ```bash
 python app.py
 ```
 
-3. Or run the standalone script:
-```bash
-python gmail_login.py
-```
+The application will be available at `http://localhost:5000`
 
 ## Deployment
 
-This application can be deployed to platforms that support Python web applications. Here are the steps for deploying to Heroku:
+### Deploy to Heroku
 
 1. Create a new Heroku app:
 ```bash
-heroku create gmail-auto-login
+heroku create gmail-quick-login
 ```
 
-2. Add buildpacks:
-```bash
-heroku buildpacks:add heroku/python
-heroku buildpacks:add https://github.com/heroku/heroku-buildpack-google-chrome
-heroku buildpacks:add https://github.com/heroku/heroku-buildpack-chromedriver
-```
-
-3. Set environment variables:
-```bash
-heroku config:set GOOGLE_CHROME_BIN=/app/.apt/usr/bin/google-chrome
-heroku config:set CHROMEDRIVER_PATH=/app/.chromedriver/bin/chromedriver
-```
-
-4. Deploy:
+2. Deploy the application:
 ```bash
 git push heroku main
 ```
 
-## Files
+### Deploy to Render
 
+1. Create a new Web Service
+2. Connect your GitHub repository
+3. Use the following settings:
+   - Build Command: `pip install -r requirements.txt`
+   - Start Command: `gunicorn app:app`
+
+### Deploy to Railway
+
+1. Create a new project
+2. Connect your GitHub repository
+3. The deployment will automatically use the Procfile
+
+## Files
 - `app.py`: Flask web application
-- `gmail_login.py`: Standalone Selenium script
 - `requirements.txt`: Python dependencies
 - `Procfile`: Deployment configuration
 
-## Notes
-
-- The web application requires a server with Chrome/Chromium installed
-- For security, consider implementing proper authentication and credential management
-- The application runs Chrome in headless mode on the server
-
-## GitHub Pages
-
-The static version of this application is available at:
+## GitHub Pages Version
+A static version is available at:
 https://tjtminbox.github.io/gmail_login/
 
 ## Web Application Version
-
-The full web application version with automated login is available at:
+The full web application is available at:
 [Your deployed application URL]
+
+## Notes
+- The application uses Flask for serving the web interface
+- Credentials are displayed on the interface for easy access
+- The login link pre-fills the email address for convenience
