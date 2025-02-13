@@ -1,44 +1,88 @@
-# Gmail Login Automation
+# Gmail Auto Login
 
-This repository contains two methods for Gmail login:
-
-1. Quick Login Link (Web): https://tjtminbox.github.io/gmail_login/
-2. Selenium Automation Script (Python)
+This application provides automated Gmail login functionality through both a web interface and a Selenium script.
 
 ## Account Information
 - Email: thomas@vocerpay.xyz
 - Password: Katasandi01
 
-## Selenium Automation Setup
+## Features
 
-1. Install Python requirements:
+1. **Web Application**
+   - Interactive web interface
+   - One-click automated login
+   - Real-time status updates
+   - Automatic redirection to Gmail
+
+2. **Selenium Script**
+   - Standalone Python script for local use
+   - Detailed logging
+   - Error handling with screenshots
+   - Headless browser support
+
+## Local Development
+
+1. Install dependencies:
 ```bash
 pip install -r requirements.txt
 ```
 
-2. Make sure you have Google Chrome installed on your computer
+2. Run the web application:
+```bash
+python app.py
+```
 
-3. Run the automation script:
+3. Or run the standalone script:
 ```bash
 python gmail_login.py
 ```
 
-The script will:
-- Open Chrome browser
-- Navigate to Gmail
-- Automatically enter the email and password
-- Log in to the account
-- Keep the browser open for 10 seconds to show the result
-- Close automatically
+## Deployment
 
-### Customization
+This application can be deployed to platforms that support Python web applications. Here are the steps for deploying to Heroku:
 
-You can modify `gmail_login.py` to:
-- Run in headless mode (uncomment the headless option)
-- Change the wait time after login
-- Add additional automation steps
+1. Create a new Heroku app:
+```bash
+heroku create gmail-auto-login
+```
+
+2. Add buildpacks:
+```bash
+heroku buildpacks:add heroku/python
+heroku buildpacks:add https://github.com/heroku/heroku-buildpack-google-chrome
+heroku buildpacks:add https://github.com/heroku/heroku-buildpack-chromedriver
+```
+
+3. Set environment variables:
+```bash
+heroku config:set GOOGLE_CHROME_BIN=/app/.apt/usr/bin/google-chrome
+heroku config:set CHROMEDRIVER_PATH=/app/.chromedriver/bin/chromedriver
+```
+
+4. Deploy:
+```bash
+git push heroku main
+```
+
+## Files
+
+- `app.py`: Flask web application
+- `gmail_login.py`: Standalone Selenium script
+- `requirements.txt`: Python dependencies
+- `Procfile`: Deployment configuration
 
 ## Notes
-- The script requires a stable internet connection
-- Make sure no other automation is running on Chrome
-- If you encounter any issues, check that Chrome is up to date
+
+- The web application requires a server with Chrome/Chromium installed
+- For security, consider implementing proper authentication and credential management
+- The application runs Chrome in headless mode on the server
+
+## GitHub Pages
+
+The static version of this application is available at:
+https://tjtminbox.github.io/gmail_login/
+
+## Web Application Version
+
+The full web application version with automated login is available at:
+[Your deployed application URL]

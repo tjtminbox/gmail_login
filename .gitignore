@@ -1,3 +1,16 @@
-server.py
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.env
+*.log
+.DS_Store
+.idea/
+.vscode/
+*.screenshot.png
+error_screenshot.png
+login_state.png
+chromedriver.log
